@@ -1,0 +1,144 @@
+<div class="hesaplama-sayfasi">
+  <div class="form-kutusu hesaplama-kutusu">
+    <div class="kutu-baslik">
+      <h2>Kredi Hesaplama</h2>
+      <p class="alt-baslik">İhtiyacına uygun krediyi seç, saniyeler içinde ödeme planını gör.</p>
+    </div>
+
+    <form (ngSubmit)="hesapla()">
+      <label>
+        Kredi Türü
+        <select name="krediUrunuId" [(ngModel)]="krediUrunuId" (ngModelChange)="urunSecildi()" required>
+          <option [ngValue]="null" disabled>Seçiniz</option>
+          @for (u of urunler(); track u.id) {
+            <option [ngValue]="u.id">{{ u.ad }} (%{{ u.faizOrani * 100 | number: '1.0-2' }})</option>
+          }
+        </select>
+      </label>
+
+      @if (secilenUrun(); as u) {
+        <div class="urun-detay-karti">
+          <div class="urun-detay-satiri">
+            <span class="etiket">Aylık Faiz Oranı</span>
+            <span class="deger">%{{ u.faizOrani * 100 | number: '1.0-2' }}</span>
+          </div>
+          <div class="urun-detay-satiri">
+            <span class="etiket">Tutar Aralığı</span>
+            <span class="deger">{{ u.minTutar | number }} – {{ u.maksTutar | number }} TL</span>
+          </div>
+          <div class="urun-detay-satiri">
+            <span class="etiket">Vade Aralığı</span>
+            <span class="deger">{{ u.minVade }} – {{ u.maksVade }} Ay</span>
+          </div>
+        </div>
+
+        <label class="slider-etiket">
+          Talep Edilen Tutar
+          <span class="slider-deger">{{ tutar | number }} TL</span>
+        </label>
+        <input
+          type="range"
+          class="slider"
+          [min]="u.minTutar"
+          [max]="u.maksTutar"
+          [step]="tutarAdimi(u)"
+          name="tutarSlider"
+          [(ngModel)]="tutar"
+          (ngModelChange)="degerDegisti()"
+        />
+        <input
+          #tutarKutusu
+          type="number"
+          name="tutar"
+          [ngModel]="tutar"
+          (ngModelChange)="tutar = $event; degerDegisti(tutarKutusu)"
+          [min]="u.minTutar"
+          [max]="u.maksTutar"
+        />
+
+        <label class="slider-etiket">
+          Vade
+          <span class="slider-deger">{{ vade }} Ay</span>
+        </label>
+        <input
+          type="range"
+          class="slider"
+          [min]="u.minVade"
+          [max]="u.maksVade"
+          name="vadeSlider"
+          [(ngModel)]="vade"
+          (ngModelChange)="degerDegisti()"
+        />
+        <input
+          #vadeKutusu
+          type="number"
+          name="vade"
+          [ngModel]="vade"
+          (ngModelChange)="vade = $event; degerDegisti(vadeKutusu)"
+          [min]="u.minVade"
+          [max]="u.maksVade"
+        />
+      }
+
+      @if (hataMesaji()) {
+        <p class="hata">{{ hataMesaji() }}</p>
+      }
+    </form>
+  </div>
+
+  @if (sonuc(); as s) {
+    <div class="sonuc-karti">
+      <span class="sonuc-etiketi">Aylık Taksit</span>
+      <span class="sonuc-ana-deger">{{ s.aylikTaksit | number }} TL</span>
+
+      <div class="sonuc-alt-satir">
+        <div>
+          <span class="etiket">Toplam Geri Ödeme</span>
+          <span class="deger">{{ s.toplamGeriOdeme | number }} TL</span>
+        </div>
+        <div>
+          <span class="etiket">Toplam Faiz Tutarı</span>
+          <span class="deger">{{ s.toplamFaizTutari | number }} TL</span>
+        </div>
+      </div>
+
+      <button type="button" class="detay-butonu" (click)="detayGosterKapat()">
+        {{ detayAcik() ? 'Detayı Gizle' : 'Detayı Gör' }}
+      </button>
+    </div>
+  }
+
+  @if (detayAcik() && amortismanSatirlari().length > 0) {
+    <div class="amortisman-kutusu">
+      <h3>Aylık Ödeme Planı</h3>
+      <div class="tablo-sarici">
+        <table>
+          <thead>
+            <tr>
+              <th>Ay</th>
+              <th>Taksit</th>
+              <th>Anapara</th>
+              <th>Faiz</th>
+              <th>Kalan Bakiye</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (satir of amortismanSatirlari(); track satir.ay) {
+              <tr>
+                <td>{{ satir.ay }}</td>
+                <td>{{ satir.taksit | number }} TL</td>
+                <td>{{ satir.anapara | number }} TL</td>
+                <td>{{ satir.efektifFaiz | number }} TL</td>
+                <td>{{ satir.kalan | number }} TL</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
+
+@if (uyariMesaji(); as mesaj) {
+  <div class="uyari-toast" role="alert">{{ mesaj }}</div>
+}

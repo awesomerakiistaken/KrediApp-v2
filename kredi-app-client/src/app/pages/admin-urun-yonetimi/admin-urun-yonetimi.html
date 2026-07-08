@@ -1,0 +1,78 @@
+<div class="liste-kutusu">
+  <h2>Kredi Ürünü Yönetimi</h2>
+
+  @if (urunler().length === 0) {
+    <p>Henüz ürün yok.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Ad</th>
+          <th>Vade Aralığı</th>
+          <th>Faiz Oranı</th>
+          <th>Tutar Aralığı</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of urunler(); track u.id) {
+          <tr>
+            <td>{{ u.ad }}</td>
+            <td>{{ u.minVade }} - {{ u.maksVade }} ay</td>
+            <td>%{{ u.faizOrani * 100 | number: '1.0-2' }}</td>
+            <td>{{ u.minTutar }} - {{ u.maksTutar }} TL</td>
+            <td><button (click)="sil(u.id)">Sil</button></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <h3>Yeni Ürün Ekle</h3>
+  <form (ngSubmit)="kaydet()">
+    <label>
+      Ad
+      <input type="text" name="ad" [(ngModel)]="form.ad" required />
+    </label>
+    <label>
+      Min Vade (ay)
+      <input type="number" name="minVade" [(ngModel)]="form.minVade" required />
+    </label>
+    <label>
+      Maks Vade (ay)
+      <input type="number" name="maksVade" [(ngModel)]="form.maksVade" required />
+    </label>
+    <label>
+      Aylık Faiz Oranı
+      <input type="number" step="0.001" name="faizOrani" [(ngModel)]="form.faizOrani" required />
+    </label>
+    <label>
+      KKDF
+      <input type="number" step="0.01" name="kkdf" [(ngModel)]="form.kkdf" required />
+    </label>
+    <label>
+      BSMV
+      <input type="number" step="0.01" name="bsmv" [(ngModel)]="form.bsmv" required />
+    </label>
+    <label>
+      Min Tutar
+      <input type="number" name="minTutar" [(ngModel)]="form.minTutar" required />
+    </label>
+    <label>
+      Maks Tutar
+      <input type="number" name="maksTutar" [(ngModel)]="form.maksTutar" required />
+    </label>
+
+    @if (hataMesaji()) {
+      <p class="hata">{{ hataMesaji() }}</p>
+    }
+
+    <button type="submit" [disabled]="kaydediliyor()">
+      {{ kaydediliyor() ? 'Ekleniyor...' : 'Ekle' }}
+    </button>
+  </form>
+</div>
+
+@if (basariMesaji(); as mesaj) {
+  <div class="uyari-toast basari" role="status">{{ mesaj }}</div>
+}

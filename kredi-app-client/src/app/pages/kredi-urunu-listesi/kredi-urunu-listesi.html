@@ -1,0 +1,30 @@
+<div class="liste-kutusu">
+  <h2>Kredi Ürünleri</h2>
+
+  @if (yukleniyor()) {
+    <p>Yükleniyor...</p>
+  } @else if (urunler().length === 0) {
+    <p>Henüz ürün yok.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Ad</th>
+          <th>Vade Aralığı</th>
+          <th>Faiz Oranı</th>
+          <th>Tutar Aralığı</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of urunler(); track u.id) {
+          <tr>
+            <td>{{ u.ad }}</td>
+            <td>{{ u.minVade }} - {{ u.maksVade }} ay</td>
+            <td>%{{ u.faizOrani * 100 | number: '1.0-2' }}</td>
+            <td>{{ u.minTutar }} - {{ u.maksTutar }} TL</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,28 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Angular / Node
+node_modules/
+.angular/
+dist/
+kredi-app-client/coverage/
+
+# Logs
+logs/
+*.log
+
+# Local secrets (gerçek JWT anahtarı / bağlantı dizesi burada tutulur, repo'ya girmez)
+appsettings.Development.json
+appsettings.*.local.json
+
+# Local tooling / editor
+.claude/
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store

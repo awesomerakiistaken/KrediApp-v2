@@ -1,0 +1,30 @@
+<header class="ust-bar">
+  <span class="marka">KrediApp</span>
+
+  <nav class="sekmeler">
+    <a routerLink="/hesaplama" routerLinkActive="aktif">Hesaplama</a>
+    @if (auth.rol() === 'Admin') {
+      <a routerLink="/admin/urunler" routerLinkActive="aktif">Ürünler</a>
+      <a routerLink="/admin/raporlar" routerLinkActive="aktif">Raporlar</a>
+    } @else {
+      <a routerLink="/basvuru-olustur" routerLinkActive="aktif">Başvuru</a>
+      @if (auth.girisYapilmisMi()) {
+        <a routerLink="/basvurularim" routerLinkActive="aktif">Başvurularım</a>
+      }
+    }
+  </nav>
+
+  <div class="sag-alan">
+    @if (auth.girisYapilmisMi()) {
+      <span class="mod-etiketi">Merhaba, {{ auth.ad() }} ({{ auth.rol() }})</span>
+      <button (click)="cikisYap()">Çıkış Yap</button>
+    } @else {
+      <a routerLink="/login">Giriş Yap</a>
+      <a class="admin-buton" routerLink="/kayit">Kayıt Ol</a>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>

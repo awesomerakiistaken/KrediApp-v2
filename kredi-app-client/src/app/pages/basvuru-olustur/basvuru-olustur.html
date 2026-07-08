@@ -1,0 +1,114 @@
+<div class="hesaplama-sayfasi">
+  <div class="form-kutusu hesaplama-kutusu">
+    <div class="kutu-baslik">
+      <h2>Yeni Kredi Başvurusu</h2>
+      <p class="alt-baslik">Kredi türünü seç, tutar ve vadeyi belirle, başvurunu gönder.</p>
+    </div>
+
+    <form (ngSubmit)="basvurOl()">
+      <label>
+        Kredi Ürünü
+        <select name="krediUrunuId" [(ngModel)]="krediUrunuId" (ngModelChange)="urunSecildi()" required>
+          <option [ngValue]="null" disabled>Seçiniz</option>
+          @for (u of urunler(); track u.id) {
+            <option [ngValue]="u.id">{{ u.ad }}</option>
+          }
+        </select>
+      </label>
+
+      @if (secilenUrun(); as u) {
+        <div class="urun-detay-karti">
+          <div class="urun-detay-satiri">
+            <span class="etiket">Aylık Faiz Oranı</span>
+            <span class="deger">%{{ u.faizOrani * 100 | number: '1.0-2' }}</span>
+          </div>
+          <div class="urun-detay-satiri">
+            <span class="etiket">Tutar Aralığı</span>
+            <span class="deger">{{ u.minTutar | number }} – {{ u.maksTutar | number }} TL</span>
+          </div>
+          <div class="urun-detay-satiri">
+            <span class="etiket">Vade Aralığı</span>
+            <span class="deger">{{ u.minVade }} – {{ u.maksVade }} Ay</span>
+          </div>
+        </div>
+
+        <label class="slider-etiket">
+          Talep Edilen Tutar
+          <span class="slider-deger">{{ talepEdilenTutar }} TL</span>
+        </label>
+        <input
+          type="range"
+          class="slider"
+          [min]="u.minTutar"
+          [max]="u.maksTutar"
+          [step]="tutarAdimi(u)"
+          name="talepEdilenTutarSlider"
+          [(ngModel)]="talepEdilenTutar"
+          (ngModelChange)="degerDegisti()"
+        />
+        <input
+          #tutarKutusu
+          type="number"
+          name="talepEdilenTutar"
+          [ngModel]="talepEdilenTutar"
+          (ngModelChange)="talepEdilenTutar = $event; degerDegisti(tutarKutusu)"
+          [min]="u.minTutar"
+          [max]="u.maksTutar"
+        />
+
+        <label class="slider-etiket">
+          Vade
+          <span class="slider-deger">{{ talepEdilenVade }} Ay</span>
+        </label>
+        <input
+          type="range"
+          class="slider"
+          [min]="u.minVade"
+          [max]="u.maksVade"
+          name="talepEdilenVadeSlider"
+          [(ngModel)]="talepEdilenVade"
+          (ngModelChange)="degerDegisti()"
+        />
+        <input
+          #vadeKutusu
+          type="number"
+          name="talepEdilenVade"
+          [ngModel]="talepEdilenVade"
+          (ngModelChange)="talepEdilenVade = $event; degerDegisti(vadeKutusu)"
+          [min]="u.minVade"
+          [max]="u.maksVade"
+        />
+      }
+
+      @if (hataMesaji()) {
+        <p class="hata">{{ hataMesaji() }}</p>
+      }
+
+      <button type="submit" [disabled]="gonderiliyor() || !onIzleme()">
+        {{ gonderiliyor() ? 'Gönderiliyor...' : 'Başvuruyu Gönder' }}
+      </button>
+    </form>
+  </div>
+
+  @if (onIzleme(); as s) {
+    <div class="sonuc-karti">
+      <span class="sonuc-etiketi">Tahmini Aylık Taksit</span>
+      <span class="sonuc-ana-deger">{{ s.aylikTaksit | number }} TL</span>
+
+      <div class="sonuc-alt-satir">
+        <div>
+          <span class="etiket">Toplam Geri Ödeme</span>
+          <span class="deger">{{ s.toplamGeriOdeme | number }} TL</span>
+        </div>
+        <div>
+          <span class="etiket">Toplam Faiz Tutarı</span>
+          <span class="deger">{{ s.toplamFaizTutari | number }} TL</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+@if (uyariMesaji(); as mesaj) {
+  <div class="uyari-toast" role="alert">{{ mesaj }}</div>
+}

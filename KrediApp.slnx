@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="KrediApp.Api/KrediApp.Api.csproj" />
+  <Project Path="KrediApp.Business/KrediApp.Business.csproj" />
+  <Project Path="KrediApp.Common/KrediApp.Common.csproj" />
+  <Project Path="KrediApp.Data/KrediApp.Data.csproj" />
+  <Project Path="KrediApp.KuyrukDenemesi/KrediApp.KuyrukDenemesi.csproj" />
+  <Project Path="KrediApp.ML.Trainer/KrediApp.ML.Trainer.csproj" />
+  <Project Path="KrediApp.ML/KrediApp.ML.csproj" />
+</Solution>

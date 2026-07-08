@@ -1,0 +1,662 @@
+$teal: #0d9488;
+$teal-dark: #0f766e;
+$teal-light: #ccfbf1;
+$ink: #0f172a;
+$muted: #64748b;
+$border: #e2e8f0;
+$surface: #ffffff;
+$bg: #f8fafc;
+$danger: #dc2626;
+$danger-light: #fee2e2;
+$warning: #d97706;
+$warning-light: #fef3c7;
+$radius: 14px;
+$shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  background: $bg;
+  color: $ink;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ust-bar {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 14px 32px;
+  background: $surface;
+  border-bottom: 1px solid $border;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-wrap: wrap;
+
+  .marka {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, $teal, $teal-dark);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sekmeler {
+    display: flex;
+    gap: 28px;
+    flex: 1;
+
+    a {
+      color: $muted;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+
+      &:hover {
+        color: $ink;
+      }
+
+      &.aktif {
+        color: $teal-dark;
+        border-bottom-color: $teal;
+      }
+    }
+  }
+
+  .sag-alan {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .mod-etiketi {
+      font-size: 14px;
+      color: $muted;
+      font-weight: 500;
+    }
+
+    a {
+      color: $muted;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: $ink;
+      }
+    }
+
+    .admin-buton {
+      background: $ink;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.15s ease;
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+
+    button {
+      background: none;
+      border: 1px solid $border;
+      border-radius: 8px;
+      padding: 9px 16px;
+      cursor: pointer;
+      color: $ink;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease;
+
+      &:hover {
+        background: $bg;
+        border-color: $muted;
+      }
+    }
+  }
+}
+
+main {
+  padding: 40px 32px;
+  max-width: 640px;
+  margin: 0 auto;
+
+  &:has(.rapor-kutusu) {
+    max-width: 1140px;
+  }
+
+  &:has(.hesaplama-sayfasi) {
+    max-width: 640px;
+  }
+}
+
+.form-kutusu, .liste-kutusu {
+  background: $surface;
+  padding: 28px;
+  border-radius: $radius;
+  border: 1px solid $border;
+  box-shadow: $shadow;
+
+  h2 {
+    margin: 0 0 4px;
+    font-size: 22px;
+  }
+
+  .kutu-baslik {
+    margin-bottom: 20px;
+  }
+
+  .alt-baslik {
+    color: $muted;
+    font-size: 14px;
+    margin: 4px 0 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: $muted;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    input, select {
+      padding: 11px 12px;
+      border: 1px solid $border;
+      border-radius: 9px;
+      font-size: 15px;
+      font-family: inherit;
+      color: $ink;
+      background: $surface;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $teal;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+      }
+    }
+
+    button[type='submit'] {
+      margin-top: 8px;
+      padding: 13px;
+      background: $teal;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+
+      &:hover {
+        background: $teal-dark;
+      }
+
+      &:active {
+        transform: scale(0.99);
+      }
+    }
+  }
+
+  .hata {
+    color: $danger;
+    font-size: 14px;
+    background: $danger-light;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin: 0;
+  }
+}
+
+.liste-kutusu {
+  .baslik-satiri {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+      color: $teal;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: $teal-dark;
+      }
+    }
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid $border;
+  }
+
+  th {
+    color: $muted;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tbody tr {
+    transition: background 0.1s ease;
+
+    &:hover {
+      background: $bg;
+    }
+  }
+
+  a {
+    color: $teal;
+    font-weight: 600;
+  }
+
+  button {
+    background: none;
+    border: 1px solid $border;
+    border-radius: 7px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: $bg;
+    }
+  }
+}
+
+.durum-etiketi {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &.bekleme {
+    background: $warning-light;
+    color: $warning;
+  }
+
+  &.onaylandi {
+    background: $teal-light;
+    color: $teal-dark;
+  }
+
+  &.reddedildi {
+    background: $danger-light;
+    color: $danger;
+  }
+}
+
+// --- Hesaplama sayfası ---
+
+.hesaplama-sayfasi {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.urun-detay-karti {
+  display: grid;
+  gap: 10px;
+  background: $bg;
+  border: 1px solid $border;
+  border-radius: 10px;
+  padding: 14px 16px;
+
+  .urun-detay-satiri {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+
+    .etiket {
+      color: $muted;
+      font-weight: 500;
+    }
+
+    .deger {
+      font-weight: 700;
+      color: $ink;
+    }
+  }
+}
+
+.slider-etiket {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4px;
+
+  .slider-deger {
+    color: $teal-dark;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
+input[type='range'].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: $border;
+  margin: 4px 0 2px;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: $teal;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: $teal;
+    border: 3px solid white;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+    cursor: pointer;
+  }
+}
+
+.sonuc-karti {
+  background: linear-gradient(135deg, $teal, $teal-dark);
+  color: white;
+  padding: 28px;
+  border-radius: $radius;
+  box-shadow: 0 12px 28px rgba(13, 148, 136, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .sonuc-etiketi {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+
+  .sonuc-ana-deger {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .sonuc-alt-satir {
+    display: flex;
+    gap: 32px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .etiket {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .deger {
+      font-size: 16px;
+      font-weight: 700;
+    }
+  }
+
+  .detay-butonu {
+    margin-top: 18px;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.16);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+  }
+}
+
+.amortisman-kutusu {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: 20px 24px;
+
+  h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+  }
+
+  .tablo-sarici {
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  table {
+    font-size: 13px;
+
+    th {
+      position: sticky;
+      top: 0;
+      background: $surface;
+    }
+  }
+}
+
+.uyari-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 50;
+  background: $ink;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.25);
+  max-width: 320px;
+  animation: toast-in 0.2s ease;
+
+  &.basari {
+    background: $teal-dark;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- Raporlar sayfası ---
+
+.rapor-kutusu {
+  .filtre-satiri {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+
+    input, select {
+      padding: 9px 12px;
+      border: 1px solid $border;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.15s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $teal;
+      }
+    }
+  }
+
+  .disa-aktar-satiri {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+
+    button {
+      background: white;
+      border: 1px solid $border;
+      border-radius: 8px;
+      padding: 7px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: inherit;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: $bg;
+      }
+    }
+  }
+
+  table {
+    font-size: 14px;
+
+    button {
+      background: $teal;
+      color: white;
+      border: none;
+      font-weight: 600;
+
+      &:hover {
+        background: $teal-dark;
+      }
+    }
+  }
+
+  .detay-satiri td {
+    background: $bg;
+    padding: 18px;
+  }
+
+  .risk-kutusu {
+    border-left: 3px solid $danger;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    background: white;
+    border-radius: 0 8px 8px 0;
+
+    h4 {
+      margin: 0 0 6px;
+    }
+
+    p {
+      margin: 0 0 8px;
+      color: $muted;
+    }
+
+    button {
+      margin-right: 8px;
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+      transition: opacity 0.15s ease;
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+
+    button:first-of-type {
+      background: $teal;
+      color: white;
+    }
+
+    button:last-of-type {
+      background: white;
+      border: 1px solid $danger;
+      color: $danger;
+    }
+  }
+
+  .amortisman-tablosu {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+
+    th, td {
+      font-size: 13px;
+    }
+  }
+}

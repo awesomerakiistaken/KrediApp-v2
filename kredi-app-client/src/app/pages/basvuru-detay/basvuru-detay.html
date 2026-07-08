@@ -1,0 +1,21 @@
+<div class="form-kutusu">
+  @if (yukleniyor()) {
+    <p>Yükleniyor...</p>
+  } @else if (basvuru(); as b) {
+    <h2>Başvuru #{{ b.id }}</h2>
+    <p>Talep Edilen Tutar: {{ b.talepEdilenTutar }}</p>
+    <p>Talep Edilen Vade: {{ b.talepEdilenVade }} ay</p>
+    <p>Durum: {{ b.durum }}</p>
+    <p>Risk Skoru: {{ b.riskSkoru ?? 'Henüz değerlendirilmedi' }}</p>
+
+    <h3>Ödeme Planı</h3>
+    @if (hesaplama(); as h) {
+      <p>Aylık Taksit: {{ h.aylikTaksit }}</p>
+      <p>Toplam Geri Ödeme: {{ h.toplamGeriOdeme }}</p>
+      <p>Toplam Faiz Tutarı: {{ h.toplamFaizTutari }}</p>
+    } @else {
+      <p>Bu başvuru için henüz bir hesaplama yapılmadı.</p>
+      <button (click)="hesapla()">Hesapla</button>
+    }
+  }
+</div>

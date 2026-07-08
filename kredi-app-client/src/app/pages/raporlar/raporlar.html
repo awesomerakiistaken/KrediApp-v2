@@ -1,0 +1,112 @@
+<div class="liste-kutusu rapor-kutusu">
+  <h2>Gelen Başvurular</h2>
+
+  <div class="filtre-satiri">
+    <input type="text" placeholder="Arama (Ad, Soyad, TC)" [(ngModel)]="aramaMetni" />
+
+    <select [(ngModel)]="durumFiltresi">
+      <option>Tümü</option>
+      <option>Bekleme</option>
+      <option>Onaylandı</option>
+      <option>Reddedildi</option>
+    </select>
+
+    <select [(ngModel)]="krediTuruFiltresi">
+      <option>Tümü</option>
+      @for (tur of krediTurleri(); track tur) {
+        <option [value]="tur">{{ tur }}</option>
+      }
+    </select>
+
+    <input type="date" [(ngModel)]="baslangicTarihi" />
+    <input type="date" [(ngModel)]="bitisTarihi" />
+  </div>
+
+  <div class="disa-aktar-satiri">
+    <button type="button" (click)="pdfIndir()">PDF</button>
+    <button type="button" (click)="excelIndir()">Excel</button>
+  </div>
+
+  @if (yukleniyor()) {
+    <p>Yükleniyor...</p>
+  } @else if (filtrelenmisBasvurular().length === 0) {
+    <p>Kayıt bulunamadı.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Başvuru Tarihi</th>
+          <th>Ad Soyad</th>
+          <th>TC Kimlik</th>
+          <th>Telefon</th>
+          <th>Durum</th>
+          <th>Risk</th>
+          <th>Kredi Türü</th>
+          <th>Kredi Tutarı</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (b of filtrelenmisBasvurular(); track b.id) {
+          <tr>
+            <td>{{ b.basvuruTarihi | date: 'short' }}</td>
+            <td>{{ b.kullanici?.ad }} {{ b.kullanici?.soyad }}</td>
+            <td>{{ b.kullanici?.tcKimlik }}</td>
+            <td>{{ b.kullanici?.telNo }}</td>
+            <td><span class="durum-etiketi {{ durumSinifi(b.durum) }}">{{ b.durum }}</span></td>
+            <td>{{ b.riskSkoru !== null ? (b.riskSkoru * 100 | number: '1.0-0') + '%' : '-' }}</td>
+            <td>{{ b.krediUrunu?.ad }}</td>
+            <td>{{ b.talepEdilenTutar }} TL ({{ b.talepEdilenVade }} Ay)</td>
+            <td><button type="button" (click)="detayiAcKapat(b.id)">Detay Gör</button></td>
+          </tr>
+          @if (acikBasvuruId() === b.id) {
+            <tr class="detay-satiri">
+              <td colspan="9">
+                @if (b.riskSkoru !== null) {
+                  <div class="risk-kutusu">
+                    <h4>Risk Değerlendirmesi</h4>
+                    <p>Model, %{{ b.riskSkoru * 100 | number: '1.0-0' }} olasılıkla bu müşterinin
+                      krediyi zamanında ödeyemeyeceğini tahmin ediyor.</p>
+                    @if (b.durum === 'Bekleme') {
+                      <button type="button" (click)="durumGuncelle(b, 'Onaylandı')">Onayla</button>
+                      <button type="button" (click)="durumGuncelle(b, 'Reddedildi')">Reddet</button>
+                    }
+                  </div>
+                }
+
+                <table class="amortisman-tablosu">
+                  <thead>
+                    <tr>
+                      <th>Ay</th>
+                      <th>Taksit</th>
+                      <th>Anapara</th>
+                      <th>Ham Faiz</th>
+                      <th>BSMV</th>
+                      <th>KKDF</th>
+                      <th>Efektif Faiz</th>
+                      <th>Kalan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (satir of amortismanTablosu(b); track satir.ay) {
+                      <tr>
+                        <td>{{ satir.ay }}</td>
+                        <td>{{ satir.taksit }}</td>
+                        <td>{{ satir.anapara }}</td>
+                        <td>{{ satir.hamFaiz }}</td>
+                        <td>{{ satir.bsmv }}</td>
+                        <td>{{ satir.kkdf }}</td>
+                        <td>{{ satir.efektifFaiz }}</td>
+                        <td>{{ satir.kalan }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,37 @@
+<div class="liste-kutusu">
+  <div class="baslik-satiri">
+    <h2>Kredi Başvuruları</h2>
+    <a routerLink="/basvuru-olustur">+ Yeni Başvuru</a>
+  </div>
+
+  @if (yukleniyor()) {
+    <p>Yükleniyor...</p>
+  } @else if (basvurular().length === 0) {
+    <p>Henüz başvuru yok.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Tutar</th>
+          <th>Vade</th>
+          <th>Tarih</th>
+          <th>Durum</th>
+          <th>Risk Skoru</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (b of basvurular(); track b.id) {
+          <tr>
+            <td><a [routerLink]="['/basvurular', b.id]">{{ b.id }}</a></td>
+            <td>{{ b.talepEdilenTutar }}</td>
+            <td>{{ b.talepEdilenVade }}</td>
+            <td>{{ b.basvuruTarihi | date: 'short' }}</td>
+            <td><span class="durum-etiketi {{ durumSinifi(b.durum) }}">{{ b.durum }}</span></td>
+            <td>{{ b.riskSkoru ?? '-' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
